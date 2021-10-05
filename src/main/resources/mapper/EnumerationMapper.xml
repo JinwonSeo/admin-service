@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sproutfx.platform.adminservice.api.mapper.EnumerationMapper">
+    <select id="selectForTreeView" resultType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        SELECT  A.id,
+                A.nId,
+                A.name,
+                A.sequence,
+                A.isActive,
+                A.isDefault,
+                A.description,
+                A.pId,
+                A.isLocked,
+                A.createdOn,
+                A.createUserId,
+                A.lastUpdatedOn,
+                A.lastUpdateUserId,
+                A.deletedOn,
+                A.deleteUserId
+        FROM	dbo.Enumeration AS A WITH (NOLOCK)
+        WHERE	A.isDeleted = 0
+    </select>
+    <select id="selectById" resultType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        SELECT  A.id,
+                A.nId,
+                A.name,
+                A.sequence,
+                A.isActive,
+                A.isDefault,
+                A.description,
+                A.pId,
+                A.isLocked,
+                A.createdOn,
+                A.createUserId,
+                A.lastUpdatedOn,
+                A.lastUpdateUserId,
+                A.deletedOn,
+                A.deleteUserId
+        FROM	dbo.Enumeration AS A WITH (NOLOCK)
+        WHERE	A.isDeleted = 0
+                AND A.id = #{id, mode=IN, jdbcType=VARCHAR}
+        ORDER BY    A.sequence
+    </select>
+    <select id="selectByNId" resultType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        SELECT  A.id,
+                A.nId,
+                A.name,
+                A.sequence,
+                A.isActive,
+                A.isDefault,
+                A.description,
+                A.pId,
+                A.isLocked,
+                A.createdOn,
+                A.createUserId,
+                A.lastUpdatedOn,
+                A.lastUpdateUserId,
+                A.deletedOn,
+                A.deleteUserId
+        FROM	dbo.Enumeration AS A WITH (NOLOCK)
+        WHERE	A.isDeleted = 0
+                AND A.nId = #{nId, mode=IN, jdbcType=VARCHAR}
+        ORDER BY    A.sequence
+    </select>
+    <select id="selectByPId" resultType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        SELECT	A.id,
+                A.nId,
+                A.name,
+                A.sequence,
+                A.isActive,
+                A.isDefault,
+                A.description,
+                A.pId,
+                A.isLocked,
+                A.createdOn,
+                A.createUserId,
+                A.lastUpdatedOn,
+                A.lastUpdateUserId,
+                A.deletedOn,
+                A.deleteUserId
+        FROM	dbo.Enumeration AS A WITH (NOLOCK)
+        WHERE	A.isDeleted = 0
+                AND A.pId = #{pId, mode=IN, jdbcType=VARCHAR}
+        ORDER BY    A.sequence
+    </select>
+    <insert id="insert" parameterType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        INSERT INTO dbo.Enumeration (
+            nId,
+            name,
+            sequence,
+            isActive,
+            isDefault,
+            description,
+            pId,
+            createUserId
+        ) VALUES (
+            #{nId, mode=IN, jdbcType=VARCHAR},
+            #{name, mode=IN, jdbcType=VARCHAR},
+            #{sequence, mode=IN, jdbcType=INTEGER},
+            #{isActive, mode=IN, jdbcType=BIT},
+            #{isDefault, mode=IN, jdbcType=BIT},
+            #{description, mode=IN, jdbcType=VARCHAR},
+            #{pId, mode=IN, jdbcType=VARCHAR},
+            #{createUserId, mode=IN, jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="update" parameterType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        UPDATE  A
+        SET     A.nId = #{nId, mode=IN, jdbcType=VARCHAR},
+                A.name = #{name, mode=IN, jdbcType=VARCHAR},
+                A.sequence = #{sequence, mode=IN, jdbcType=INTEGER},
+                A.isActive = #{isActive, mode=IN, jdbcType=BIT},
+                A.isDefault = #{isDefault, mode=IN, jdbcType=BIT},
+                A.description = #{description, mode=IN, jdbcType=VARCHAR},
+                A.lastUpdatedOn = GETDATE(),
+                A.lastUpdateUserId = #{lastUpdateUserId, mode=IN, jdbcType=VARCHAR}
+        FROM    dbo.Enumeration AS A
+        WHERE   A.isDeleted = 0
+                AND A.id = #{id, mode=IN, jdbcType=VARCHAR}
+    </update>
+    <delete id="delete" parameterType="kr.sproutfx.platform.adminservice.api.model.Enumeration">
+        INSERT INTO dbo.Enumeration_SEQ (
+            enumerationId,
+            createdOn,
+            createUserId
+        ) VALUES (
+            #{id, mode=IN, jdbcType=VARCHAR},
+            GETDATE(),
+            #{deleteUserId, mode=IN, jdbcType=VARCHAR}
+        )
+        
+        UPDATE  A
+        SET     A.isDeleted = @@IDENTITY,
+                A.deletedOn = GETDATE(),
+                A.deleteUserId = #{deleteUserId, mode=IN, jdbcType=VARCHAR}
+        FROM    dbo.Enumeration AS A
+        WHERE   A.isDeleted = 0
+                AND A.id = #{id, mode=IN, jdbcType=VARCHAR}
+    </delete>
+</mapper>

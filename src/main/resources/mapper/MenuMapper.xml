@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sproutfx.platform.adminservice.api.mapper.MenuMapper">
+    <select id="selectForTreeView" resultType="kr.sproutfx.platform.adminservice.api.model.Menu">
+        SELECT  A.id,
+                A.nId,
+                A.name,
+                A.icon,
+                A.[sequence],
+                A.[description],
+                A.pId,
+                A.isLocked,
+                A.createdOn,
+                A.createUserId,
+                A.lastUpdatedOn,
+                A.lastUpdateUserId,
+                A.deletedOn,
+                A.deleteUserId
+        FROM    dbo.Menu AS A   WITH (NOLOCK)
+        WHERE   A.isDeleted = 0
+    </select>
+    <select id="selectByPId" resultType="kr.sproutfx.platform.adminservice.api.model.Menu">
+        SELECT  A.id,
+                A.nId,
+                A.name,
+                A.icon,
+                A.[sequence],
+                A.[description],
+                A.pId,
+                A.isLocked,
+                A.createdOn,
+                A.createUserId,
+                A.lastUpdatedOn,
+                A.lastUpdateUserId,
+                A.deletedOn,
+                A.deleteUserId
+        FROM    dbo.Menu AS A   WITH (NOLOCK)
+        WHERE   A.isDeleted = 0
+                AND A.pId = #{pId, mode=IN, jdbcType=VARCHAR}
+    </select>
+</mapper>

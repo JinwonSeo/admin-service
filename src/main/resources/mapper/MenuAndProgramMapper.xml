@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.sproutfx.platform.adminservice.api.mapper.MenuAndProgramMapper">
+    <select id="selectByMenuPId" resultType="kr.sproutfx.platform.adminservice.api.model.MenuAndProgram">
+        SELECT	A.id
+            ,	A.description
+            ,	B.id			AS menuId
+            ,	B.nId			AS menuNId
+            ,	B.name			AS menuName
+            ,	B.icon			AS menuIcon
+            ,	B.sequence		AS menuSequence
+            ,	B.description	AS menuDescription
+            ,	B.pId			AS menuPId
+            ,	C.id			AS programId
+            ,	C.nId			AS programNId
+            ,	C.name			AS programName
+            ,	C.path			AS programPath
+            ,	C.sequence		AS programSequence
+            ,	C.description	AS programDescription
+         FROM	dbo.MenuAndProgram AS A WITH (NOLOCK)
+                INNER JOIN dbo.Menu AS B WITH (NOLOCK) ON A.menuId = B.id AND B.isDeleted = 0
+                INNER JOIN dbo.Program AS C WITH (NOLOCK) ON A.programId = C.id AND C.isDeleted = 0
+        WHERE	A.isDeleted = 0
+                AND B.pId = #{menuPId, mode=IN, jdbcType=VARCHAR}
+                ORDER BY    B.sequence
+    </select>
+</mapper>
